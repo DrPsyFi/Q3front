@@ -5,9 +5,12 @@ import {
   Col
 } from 'reactstrap'
 import { connect } from 'react-redux'
+import {displayLyrics} from '../actions/auth.actions'
+import LyricsList from "./LyricsList"
 
 const UserProfile = (props) => {
-  console.log('up props', props)
+
+  console.log(props)
   return (
     <div>
       <Container>
@@ -26,6 +29,9 @@ const UserProfile = (props) => {
 
             <h2>This is me!!: {props.user.bio}</h2>
 
+          </Row>
+          <Row>
+            <LyricsList />
           </Row>
         </Container>
     </div>

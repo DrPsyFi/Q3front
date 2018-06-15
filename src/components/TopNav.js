@@ -25,7 +25,7 @@ class TopNav extends React.Component {
   render() {
     return (
       <div>
-        <Navbar color="primary" dark expand="md">
+        <Navbar color="secondary"  expand="md">
           <NavbarBrand href="/">ProfileHub</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>

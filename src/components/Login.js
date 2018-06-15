@@ -12,7 +12,7 @@ import {
 } from 'reactstrap'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { setUserData } from '../actions/auth.actions'
+import { setUserData, userLogin } from '../actions/auth.actions'
 import { Link } from 'react-router-dom'
 import request from "../helpers"
 
@@ -25,39 +25,21 @@ class Login extends Component {
       showErrorMessage: false
     }
   }
-    handleSubmit = (e) => {
+
+
+
+  userLogin = (e) => {
       e.preventDefault()
+
       let userName = e.target.userName.value
       let password = e.target.password.value
+      this.props.userLogin(userName, password)
 
-      console.log(userName, password);
-
-    request('/auth/token','post', { userName, password })
-    .then(response => {
-      this.setState({ showErrorMessage: false })
-      localStorage.setItem('token', response.data.token)
-      return request('/auth/token')
-    })
-    .then(response => {
-      console.log('respomse is', response.data)
-      return request(`/users/${response.data.id}`)
-      // AuthenticationService.setAuthState(response.data)
-      // this.props.history.push('/')
-    })
-    .then(response => {
-      console.log('user data?', response.data.data);
-      this.props.setUserData(response.data.data);
-    })
-    .catch(error => {
-      console.log(error)
-      this.setState({showErrorMessage: true})
-    })
   }
-
 
   render() {
     return (
-      <Container className="main-wrapper">
+      <Container className="main-wrapper background">
         <Row style={{ marginTop: '15vh' }}>
           <Col
             lg={{ size: 6, offset: 3 }}
@@ -67,7 +49,7 @@ class Login extends Component {
               boxShadow: '3px 3px 47px 0px rgba(0,0,0,0.5)'
             }}
           >
-            <Form onSubmit={this.handleSubmit}>
+            <Form onSubmit={this.userLogin}>
               <FormGroup>
                 <Label for="userName-field">User Name</Label>
                 <Input
@@ -117,7 +99,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    setUserData: bindActionCreators(setUserData, dispatch)
+    setUserData: bindActionCreators(setUserData, dispatch),
+    userLogin: bindActionCreators(userLogin, dispatch)
   }
 }
 

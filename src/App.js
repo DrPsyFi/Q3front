@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { Component } from 'react'
+import { bindActionCreators } from 'redux'
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
-
+import { reloadUser } from './actions/auth.actions'
 
 
 
@@ -12,7 +13,19 @@ import './App.css'
 import { connect } from 'react-redux'
 
 
-export const App = (props) => {
+export class App extends Component {
+  constructor(props) {
+    super(props)
+  }
+  componentDidMount() {
+    if(!this.props.isLoggedIn) {
+      this.props.reloadUser()
+    }
+
+  }
+
+  render() {
+
   return (
     <div>
       <BrowserRouter>
@@ -24,7 +37,7 @@ export const App = (props) => {
             />
             <Route path='/signup' component={Signup} />
             <Route exact path="/login" render={() =>
-                props.isLoggedIn ? (
+                this.props.isLoggedIn ? (
                   <Redirect to="/profile"/>
                 ) :
                 (
@@ -38,6 +51,7 @@ export const App = (props) => {
 
     </div>
   )
+  }
 }
 
 function mapStateToProps(state) {
@@ -46,4 +60,12 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, null)(App)
+function mapDispatchToProps(dispatch) {
+  return {
+    reloadUser: bindActionCreators(reloadUser, dispatch),
+  ////setUsERDATA?
+  }
+}
+
+
+export default connect(mapStateToProps,  mapDispatchToProps)(App)
